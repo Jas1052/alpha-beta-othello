@@ -2,8 +2,7 @@
 import pickle
 import random
 from time import time
-from jliu_strategy import Strategy      # first file
-# from rehan_strategy import Strategy99  # second file
+from othello_strategy import Strategy      # strategy file
 import othello_core as core
 
 tic = time()
@@ -13,7 +12,7 @@ SILENT = False
 s = Strategy()   # name of class in first strategy
 v = Strategy()  # name of class in second strategy
 
-s1 = s.alphabeta_strategy(5)    # actually calling of method in class; returns a strategy method
+s1 = s.alphabeta_strategy(7)    # actually calling of method in class; returns a strategy method
 s2 = v.human_strategy(3)    # ditto
 
 def play(strategy_X, strategy_O, first, silent=True):
