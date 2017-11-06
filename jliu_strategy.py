@@ -246,3 +246,42 @@ class Strategy(ai.OthelloCore):
         return
 
 
+
+    def max_value(self, board, player, alpha, beta, depth, current_depth):
+        if self.next_player(board, player) is None or current_depth is depth:
+            return self.weigh(board), None
+        v = -10**10
+        move = None
+        for val in self.legal_moves(player, board):
+            tempv = v
+            tempBoard = [board[i] for i in range(len(board))]
+            tempBoard = self.make_move(val, player, tempBoard)
+            v = max(v, self.min_value(tempBoard, self.next_player(tempBoard, player), alpha, beta, depth, current_depth + 1)[0])
+            if tempv is not v:
+                move = val
+            if v >= beta:
+                return v, val
+            alpha = max(alpha, v)
+        return v, move
+
+    def min_value(self, board, player, alpha, beta, depth, current_depth):
+        if self.next_player(board, player) is None or current_depth is depth:
+            return self.weigh(board), None
+        v = 10**10
+        move = None
+        for val in self.legal_moves(player, board):
+            tempv = v
+            tempBoard = [board[i] for i in range(len(board))]
+            tempBoard = self.make_move(val, player, tempBoard)
+            v = min(v, self.max_value(tempBoard, self.next_player(tempBoard, player), alpha, beta, depth, current_depth + 1)[0])
+            if tempv is not v:
+                move = val
+            if alpha >= v:
+                return v, val
+            beta = min(beta, v)
+        return v, move
+
+    def alphabeta_strategy(self, depth):
+        def strategy(board, player):
+            return self.alpha_beta(board, player, depth)
+        return strategy
