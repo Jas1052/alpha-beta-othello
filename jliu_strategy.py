@@ -245,7 +245,17 @@ class Strategy(ai.OthelloCore):
             depth += 1
         return
 
-
+    def alpha_beta(self, board, player, depth):
+        if player is 'o':
+            v, m = self.max_value(board, player, -10**10, 10**10, depth, 0)
+            if m is None:
+                return 0
+            return m
+        if player is '@':
+            v, m = self.min_value(board, player, -10**10, 10**10, depth, 0)
+            if m is None:
+                return 0
+            return m
 
     def max_value(self, board, player, alpha, beta, depth, current_depth):
         if self.next_player(board, player) is None or current_depth is depth:
