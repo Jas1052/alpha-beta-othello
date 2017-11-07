@@ -35,6 +35,7 @@ def play(strategy_X, strategy_O, first, silent=True):
         print(player + " makes move at " + str(move))
         player = s.opponent(player)
         if not silent: print(s.print_board(board))
+        print('------------------');
     return s.score('o', board)  # returns the score
 
 
