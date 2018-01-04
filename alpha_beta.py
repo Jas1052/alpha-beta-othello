@@ -2,6 +2,8 @@
 import pickle
 import random
 from time import time
+import sys
+sys.path.append("core")
 from othello_strategy import Strategy      # strategy file
 import othello_core as core
 
