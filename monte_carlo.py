@@ -110,7 +110,7 @@ class Node:
         self.childNodes.append(n)
         return n
     
-    def Update(self, result):
+    def count(self, result):
         self.visits += 1
         self.wins += result
 
@@ -136,12 +136,12 @@ class Node:
         return s
 
 
-def monte_carlo(rootstate, itermax, verbose = False):
-    rootnode = Node(state = rootstate)
+def monte_carlo(board, itermax, verbose = False):
+    temp_board = Node(state = board)
 
     for i in range(itermax):
-        node = rootnode
-        state = rootstate.Clone()
+        node = temp_board
+        state = board.Clone()
 
         while node.untriedMoves == [] and node.childNodes != []: 
             node = node.get_child()
@@ -157,24 +157,24 @@ def monte_carlo(rootstate, itermax, verbose = False):
 
         # backprop
         while node != None: 
-            node.Update(state.weight(node.playerJustMoved)) 
+            node.count(state.weight(node.playerJustMoved)) 
             node = node.parentNode
 
     if (verbose):
-        print rootnode.TreeToString(0)
+        print temp_board.TreeToString(0)
     else: 
-        print rootnode.ChildrenToString()
+        print temp_board.ChildrenToString()
 
-    return sorted(rootnode.childNodes, key = lambda c: c.visits)[-1].move 
+    return sorted(temp_board.childNodes, key = lambda c: c.visits)[-1].move 
                 
 def game():
     board = OthelloState(8)     
     while (board.legal_moves() != []):
         print str(board)
         if board.playerJustMoved == 1:
-            m = monte_carlo(rootstate = board, itermax = 1000, verbose = False) 
+            m = monte_carlo(board, itermax = 1000, verbose = False) 
         else:
-            m = monte_carlo(rootstate = board, itermax = 100, verbose = False)
+            m = monte_carlo(board, itermax = 100, verbose = False)
         print "Best Move: " + str(m) + "\n"
         board.make_move(m)
     if board.weight(board.playerJustMoved) == 1.0:
